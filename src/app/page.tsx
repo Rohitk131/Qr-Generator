@@ -17,7 +17,7 @@ export default function App() {
     width: 300,
     height: 300,
     type: "svg" as DrawType,
-    data: "http://qr-code-styling.com",
+    data: "",
     image: "/favicon.ico",
     margin: 10,
     qrOptions: {
@@ -81,29 +81,32 @@ export default function App() {
   };
 
   return (
-    <div className="App text-center">
-      <h2 className="text-lg font-bold mb-4">QR code styling for React</h2>
-      <div className="QRCodeWrapper" ref={ref}></div>
-      <div className="inputWrapper mx-auto max-w-sm">
-        <input
-          value={options.data}
-          onChange={onDataChange}
-          className="inputBox"
-          type="text"
-        />
-        <select onChange={onExtensionChange} value={fileExt} className="p-2">
-          <option value="svg">SVG</option>
-          <option value="png">PNG</option>
-          <option value="jpeg">JPEG</option>
-          <option value="webp">WEBP</option>
-        </select>
-        <button
-          onClick={onDownloadClick}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Download
-        </button>
-      </div>
+    <div className="flex flex-col items-center pt-10">
+    <h2 className="text-6xl font-bold mb-4 font-jersey">QRonium</h2>
+    <div className="rounded-xl pb-10">
+    <div className="QRCodeWrapper " ref={ref}></div>
     </div>
+    <div className="inputWrapper mx-auto max-w-sm ">
+        <input
+            value={options.data}
+            onChange={onDataChange}
+            className="inputBox bg-blue-900 text-white p-2 w-full mb-2 rounded-lg shadow-inner"
+            type="text"
+            placeholder= 'Enter your URL here...'
+        />
+        <select onchange={onExtensionChange} value={fileExt} className="p-2 text-black z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 m-8 ">
+            <option value="svg">SVG</option>
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WEBP</option>
+        </select>
+        <button onclick={onDownloadClick} class="group/button rounded-lg bg-[#222222] text-black">
+            <span className="block -translate-x-1 -translate-y-1 rounded-lg border-2 border-[#222222] bg-[#ff527a] px-4 py-1 text-sm font-medium tracking-tight transition-all group-hover/button:-translate-y-2 group-active/button:translate-x-0 group-active/button:translate-y-0">
+                Download
+            </span>
+        </button>
+    </div>
+</div>
+
   );
 }

@@ -1,9 +1,6 @@
-"use client";
-
 import { Boxes } from "./ui/background-boxes";
 import { cn } from "@/utils/cn";
 import React, { useEffect, useRef, useState, ChangeEvent } from "react";
-import Extension from "qr-code-styling";
 import QRCodeStyling, {
   DrawType,
   TypeNumber,
@@ -14,6 +11,7 @@ import QRCodeStyling, {
   CornerDotType,
   Options,
 } from "qr-code-styling";
+
 export default function BackgroundBoxesDemo() {
   const [options, setOptions] = useState<Options>({
     width: 300,
@@ -34,45 +32,47 @@ export default function BackgroundBoxesDemo() {
       crossOrigin: "anonymous",
     },
     dotsOptions: {
-      color: "#222222",
+      color: "white",
       type: "rounded" as DotType,
     },
     backgroundOptions: {
-      color: "#5FD4F3",
+      color: "transparent",
     },
     cornersSquareOptions: {
-      color: "#222222",
+      color: "white",
       type: "extra-rounded" as CornerSquareType,
     },
     cornersDotOptions: {
-      color: "#222222",
+      color: "skyblue",
       type: "dot" as CornerDotType,
     },
   });
-  const [fileExt, setFileExt] = useState<Extension>("svg");
-  const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
+
+  const [fileExt, setFileExt] = useState<"svg" | "png" | "jpeg" | "webp">("svg");
+  const [qrCode, setQrCode] = useState<QRCodeStyling | null>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      qrCode.append(ref.current);
-    }
-  }, [qrCode, ref]);
-
-  useEffect(() => {
-    if (!qrCode) return;
+    if (!qrCode || !ref.current) return;
     qrCode.update(options);
   }, [qrCode, options]);
 
+  useEffect(() => {
+    if (!ref.current) return;
+    const qr = new QRCodeStyling(options);
+    qr.append(ref.current);
+    setQrCode(qr);
+  }, [options]);
+
   const onDataChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setOptions((options) => ({
-      ...options,
+    setOptions((prevOptions) => ({
+      ...prevOptions,
       data: event.target.value,
     }));
   };
 
   const onExtensionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setFileExt(event.target.value as Extension);
+    setFileExt(event.target.value as typeof fileExt);
   };
 
   const onDownloadClick = () => {
@@ -81,11 +81,12 @@ export default function BackgroundBoxesDemo() {
       extension: fileExt,
     });
   };
+
   return (
     <div className="h-screen relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center ">
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
-      <h1 className={cn("md:text-6xl text-xl text-white relative z-20 ")}>
+      <h1 className={cn("md:text-6xl text-xl text-white font-jersey relative z-20 ")}>
         QRonium
       </h1>
       <p className="text-center mt-2 text-neutral-300 relative z-20 pb-10">
@@ -94,14 +95,13 @@ export default function BackgroundBoxesDemo() {
       <div className="z-10">
         <div className="QRCodeWrapper pb-4 " ref={ref}></div>
         <input
-            value={options.data}
-            onChange={onDataChange}
-            className="inputBox bg-blue-900 text-white p-2 w-full mb-2 rounded-lg shadow-inner"
-            type="text"
-            placeholder="Enter your URL here..."
-          />
+          value={options.data}
+          onChange={onDataChange}
+          className="inputBox bg-blue-900 text-white p-2 w-full mb-2 rounded-lg shadow-inner"
+          type="text"
+          placeholder="Enter your URL here..."
+        />
         <div className="inputWrapper mx-auto max-w-sm flex items-center justify-between pt-4">
-          
           <div className="flex items-center">
             <select
               onChange={onExtensionChange}

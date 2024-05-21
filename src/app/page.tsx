@@ -1,11 +1,11 @@
-'use client'
-import BackgroundBoxesDemo from "@/Components/background";
-export default function App() {
+import dynamic from 'next/dynamic';
 
+const BackgroundBoxesDemo = dynamic(() => import('../Components/background'), { ssr: false });
 
+export default function Home() {
   return (
-      <div className='w-screen h-screen'>
-    <BackgroundBoxesDemo/>
+      <div>
+        <BackgroundBoxesDemo />
       </div>
   );
 }

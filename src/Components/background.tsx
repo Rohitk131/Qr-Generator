@@ -1,3 +1,4 @@
+'use client'
 import { Boxes } from "./ui/background-boxes";
 import { cn } from "@/utils/cn";
 import React, { useEffect, useRef, useState, ChangeEvent } from "react";

@@ -1,4 +1,4 @@
-
+'use client'
 import { useEffect, useRef, useState, ChangeEvent } from "react";
 import QRCodeStyling, {
   DrawType,
